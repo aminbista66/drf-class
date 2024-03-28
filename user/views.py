@@ -2,7 +2,13 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import User
 from .seralizers import UserSerializer, UserListSerializer
-from rest_framework.generics import ListAPIView, CreateAPIView
+from rest_framework.generics import (
+    ListAPIView,
+    CreateAPIView,
+    UpdateAPIView,
+    DestroyAPIView,
+    RetrieveAPIView,
+)
 
 # class UserListView(APIView):
 #     def get(self, request, *args, **kwargs):
@@ -18,9 +24,11 @@ from rest_framework.generics import ListAPIView, CreateAPIView
 #             serializer.save()
 #             return Response({"message": "User created successfully"})
 
+
 class UserListView(ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserListSerializer
+
 
 class UserCreateView(CreateAPIView):
     serializer_class = UserSerializer
