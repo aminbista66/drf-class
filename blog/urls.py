@@ -10,6 +10,7 @@ from .views import (
     CommentRetrieveView,
     CommentUpdateView,
     CommentDeleteView,
+    BlogLikeView
 )
 
 urlpatterns = [
@@ -18,6 +19,7 @@ urlpatterns = [
     path("<int:pk>/", BlogRetrieveView.as_view()),
     path("<int:pk>/update/", BlogUpdateView.as_view()),
     path("<int:pk>/delete/", BlogDeleteView.as_view()),
+    path("<int:pk>/like/", BlogLikeView.as_view()),
 
     path("comments/", CommentListView.as_view()),
     path("comments/create/", CommentCreateView.as_view()),
