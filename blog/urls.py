@@ -27,3 +27,16 @@ urlpatterns = [
     path("comments/<int:pk>/update/", CommentUpdateView.as_view()),
     path("comments/<int:pk>/delete/", CommentDeleteView.as_view()),
 ]
+
+
+kwargs = {
+    "pk": 1,
+    "user_id": 3
+}
+
+args = (1, 3)
+
+kwargs.get('pk')
+kwargs.get('user_id')
+
+'http://localhost:8000/blogs/1/like/?user=3&random_key=5645&random_key2=90798'

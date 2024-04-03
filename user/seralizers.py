@@ -20,3 +20,7 @@ class UserLikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'name']
+
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
