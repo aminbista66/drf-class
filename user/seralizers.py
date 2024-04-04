@@ -14,13 +14,13 @@ class UserSerializer(serializers.ModelSerializer):
 class UserListSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'name', 'email', 'created_at']
+        fields = ['id', 'username', 'email', 'date_joined']
 
 class UserLikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'name']
+        fields = ['id', 'username']
 
 class LoginSerializer(serializers.Serializer):
-    username = serializers.CharField()
-    password = serializers.CharField()
+    username = serializers.CharField(required=True)
+    password = serializers.CharField(required=True)
