@@ -21,6 +21,11 @@ class UserLikeSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'username']
 
+
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(required=True)
     password = serializers.CharField(required=True)
+
+
+class LogoutSerializer(serializers.Serializer):
+    token = serializers.CharField(required=True)
