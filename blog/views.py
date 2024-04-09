@@ -38,6 +38,8 @@ class BlogRetrieveView(RetrieveAPIView):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
 
+
+# add authentication and permission
 class BlogUpdateView(UpdateAPIView):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
@@ -45,6 +47,12 @@ class BlogUpdateView(UpdateAPIView):
 class BlogDeleteView(DestroyAPIView):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Blog.objects.filter(author=self.request.user)
+    
 
 class BlogLikeView(GenericAPIView):
     request: Request
@@ -64,10 +72,12 @@ class BlogLikeView(GenericAPIView):
 
 
 # comment api
+
 class CommentListView(ListAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
+# add authentication and permission
 class CommentCreateView(CreateAPIView):
     serializer_class = CommentSerializer
 
@@ -75,10 +85,13 @@ class CommentRetrieveView(RetrieveAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
+
+# add authentication and permission
 class CommentUpdateView(UpdateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
+# add authentication and permission
 class CommentDeleteView(DestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
