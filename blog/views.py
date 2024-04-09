@@ -12,23 +12,27 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 
+from rest_framework.permissions import IsAuthenticated
+
 
 class BlogListView(ListAPIView):
     request: Request
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
-    authentication_classes = [TokenAuthentication] # this was missing and added
 
     def get_queryset(self):
-        print(self.request.user)
         author_id = self.request.query_params.get('author_id')
         if author_id:
             return Blog.objects.filter(author__pk=author_id)
         else:
             return Blog.objects.all()
 
+
 class BlogCreateView(CreateAPIView):
     serializer_class = BlogWriteSerializer  # changed this to BlogWriteSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
 
 class BlogRetrieveView(RetrieveAPIView):
     queryset = Blog.objects.all()
@@ -45,18 +49,18 @@ class BlogDeleteView(DestroyAPIView):
 class BlogLikeView(GenericAPIView):
     request: Request
     authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
         blog = Blog.objects.get(pk=kwargs.get('pk'))
-        user = self.request.query_params.get('user')
-        print(self.request.user)
+        user = self.request.user
         
-        if blog.like.filter(pk=user).exists():
+        if blog.like.filter(pk=user.pk).exists():
             blog.like.remove(user)
+            return Response({"message": "Like removed successfully"})
         else:
             blog.like.add(user)
-        
-        return Response({"message": "Like added successfully"})
+            return Response({"message": "Like added successfully"})
 
 
 # comment api
