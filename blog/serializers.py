@@ -18,14 +18,24 @@ class BlogWriteSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         request = self.context['request']
         # validated_data['author'] = request.user
-
         blog = Blog.objects.create(**validated_data, author=request.user) 
-
         # return super().create(validated_data)
-        
         return blog
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = '__all__'
+
+class CommentCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = [
+            'blog',
+            'comment'
+        ]
+
+    def create(self, validated_data):
+        request = self.context['request']
+        comment = Comment.objects.create(**validated_data, user=request.user)
+        return comment

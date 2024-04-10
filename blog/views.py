@@ -7,7 +7,7 @@ from rest_framework.generics import (
     GenericAPIView
 )
 from .models import Blog, Comment
-from .serializers import BlogSerializer, CommentSerializer, BlogWriteSerializer
+from .serializers import BlogSerializer, CommentSerializer, BlogWriteSerializer, CommentCreateSerializer
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
@@ -43,6 +43,12 @@ class BlogRetrieveView(RetrieveAPIView):
 class BlogUpdateView(UpdateAPIView):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Blog.objects.filter(author=self.request.user)
+  
 
 class BlogDeleteView(DestroyAPIView):
     queryset = Blog.objects.all()
@@ -79,7 +85,7 @@ class CommentListView(ListAPIView):
 
 # add authentication and permission
 class CommentCreateView(CreateAPIView):
-    serializer_class = CommentSerializer
+    serializer_class = CommentCreateSerializer
 
 class CommentRetrieveView(RetrieveAPIView):
     queryset = Comment.objects.all()
@@ -90,6 +96,11 @@ class CommentRetrieveView(RetrieveAPIView):
 class CommentUpdateView(UpdateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Comment.objects.filter(user=self.request.user)
 
 # add authentication and permission
 class CommentDeleteView(DestroyAPIView):
