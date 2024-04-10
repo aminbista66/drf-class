@@ -1,0 +1,29 @@
+user:
+    - superuser (can add product from django admin)
+    - customer (can add product to carts using api ) / accessible through only api
+
+models:
+    - Product
+        - name
+        - description
+        - stock_quantity
+        - seller
+        - rating
+
+    - Cart
+        - user (ForeignKey)
+        - products (ManyToMany Field)
+
+    - Order
+        - products (ManyToMany Field)
+        - total amount
+        - user (ForeignKey)
+        - seller (ForeignKey)
+
+
+order = Order.objects.create()
+for product in cart.products.all():
+    order.products.add(product)
+
+cart.delete()
+    
